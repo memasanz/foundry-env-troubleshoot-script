@@ -1,5 +1,5 @@
-Test-FoundryPrivateConnectivity.ps1 - README
-============================================
+## Troublshoot Foundry Connectivity Powershell
+
 
 Troubleshoots connectivity for a privately deployed Microsoft Foundry (Azure AI
 Foundry) account and its private dependencies (Storage, Cosmos DB, AI Search,
@@ -8,8 +8,8 @@ Key Vault). Read-only: it never changes anything in Azure.
 Output is a console verdict table.
 
 
-REQUIREMENTS
-------------
+### REQUIREMENTS
+---
 The script checks all of these itself at startup and reports them under
 "Prereq". You do not need to prepare anything in advance.
 
@@ -30,8 +30,8 @@ The script checks all of these itself at startup and reports them under
   * Permissions            See the next section.
 
 
-PERFORMANCE
------------
+### PERFORMANCE
+
 A full run takes roughly a minute. Three things make that possible, and they
 matter if you modify the script:
 
@@ -50,8 +50,8 @@ matter if you modify the script:
   If you try to "optimize" that into ARG, it will silently return nothing.
 
 
-PERMISSIONS
------------
+### PERMISSIONS
+
 The script is strictly read-only. It never creates, modifies, approves, or
 deletes anything, and it never reads keys, secrets, or connection strings.
 
@@ -125,18 +125,18 @@ Client-side tests
     -SkipClientTests when running from outside the private network.
 
 
-BASIC USE
----------
-    cd "C:\Users\samsmith\OneDrive - Microsoft\Documents\Microsoft Scout"
-    .\Test-FoundryPrivateConnectivity.ps1 -ResourceGroup <rg> -AccountName <foundry-account>
+### BASIC USE
+
+    `cd "C:\Users\samsmith\OneDrive - Microsoft\Documents\Microsoft Scout"
+    .\Test-FoundryPrivateConnectivity.ps1 -ResourceGroup <rg> -AccountName <foundry-account>`
 
 Example:
 
     .\Test-FoundryPrivateConnectivity.ps1 -ResourceGroup private-foundry -AccountName contosocb73
 
 
-PARAMETERS
-----------
+### PARAMETERS
+
   -ResourceGroup     (required) Resource group holding the Foundry account.
   -AccountName       (required) Name of the Foundry / Azure AI Services account.
   -SubscriptionId    Optional. Defaults to the current az CLI subscription.
@@ -156,8 +156,8 @@ PARAMETERS
                      -ExportHtml). A .html extension is added if missing.
 
 
-HTML REPORT
------------
+### HTML REPORT
+
 At the end of an interactive run the script asks:
 
     Export an HTML report? [y/N]
@@ -190,8 +190,8 @@ Full example:
         -Detailed
 
 
-WHAT IT CHECKS
---------------
+### WHAT IT CHECKS
+
   1. Topology         Delegated subnet injection vs Microsoft-managed network
                       vs no injection.
   2. Control plane    publicNetworkAccess, network ACLs, custom subdomain.
@@ -212,8 +212,8 @@ WHAT IT CHECKS
                       below).
 
 
-CLIENT-SIDE SEVERITY
---------------------
+### CLIENT-SIDE SEVERITY
+
 Phase 6 labels every resolution with what the client is actually talking to:
 
   PRIVATE           Resolved to the private endpoint. Correct.
@@ -239,8 +239,8 @@ and reminds you the control-plane and DNS-zone findings remain authoritative.
 Use -SkipClientTests when you only want the configuration verdict.
 
 
-READING THE RESULTS
--------------------
+### READING THE RESULTS
+
   PASS        Healthy.
   PASS-NOTE   Works, but depends on an assumption you should confirm.
   WARN        Not broken now, but a risk or a gap worth closing.
@@ -257,8 +257,8 @@ DNS VNet-link rule (two-tier, by design):
   FAIL       zone is linked to neither
 
 
-IMPORTANT: WHERE YOU RUN IT FROM
---------------------------------
+**IMPORTANT: WHERE YOU RUN IT FROM**
+
 The control-plane and DNS-zone findings are authoritative from anywhere.
 
 The client-side section only means something when run from a host that is
@@ -275,8 +275,8 @@ this reflects where you are running from, not necessarily a broken deployment.
 If you only want the configuration verdict, use -SkipClientTests.
 
 
-COMMON FINDINGS AND WHAT THEY MEAN
-----------------------------------
+### COMMON FINDINGS AND WHAT THEY MEAN
+
   "PE DNS zone group: None"
       Informational, not a fault. It means the A records are managed outside
       the private endpoint - by hand, by IaC, or by your own DNS servers -
